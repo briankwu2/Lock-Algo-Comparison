@@ -5,6 +5,7 @@
 #include <vector>
 #include <thread>
 #include <atomic> 
+#include "Lock.h"
 
 using namespace std;
 
@@ -22,7 +23,8 @@ class GPL {
     void unlock(const int myid);
     bool otherFlagExists(const int myid);
 };
-class FlagFilterLock {
+
+class FlagFilterLock : public Lock {
 
     private:
     vector<GPL> level; // pointer to a GPL array
@@ -30,16 +32,11 @@ class FlagFilterLock {
 
     public:
     FlagFilterLock(int n);
-    void lock(const int myid);
-    void unlock(const int myid);
+    void lock(const int myid) override;
+    void unlock(const int myid) override;
 
 };
 
 class LevelFilterLock;
-
-// Function Prototypes
-void increment(int &, const int);
-
-
 
 #endif // FILTER_LOCK_H

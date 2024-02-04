@@ -52,40 +52,40 @@ bool GPL::otherFlagExists(const int myid) {
     return false;
 }
 
-// ---------------
+// ----------------------------
+/**
+ * @brief Construct a new Flag Filter Lock:: Flag Filter Lock object
+ * 
+ * @param n // Number of Threads that will compete for this lock object. 
+ */
 FlagFilterLock::FlagFilterLock(int n) {
     vector<GPL> level(n, GPL(n)); // Creates a vector of n levels (GPL)
+    this->level = level;
     this->n = n;
 }
 
-void FlagFilterLock:: lock(const int myid) {
+/**
+ * @brief The lock method for a FlagFilterLock.
+ * Calls the GPL Lock Method for every level
+ * @param myid Thread ID
+ */
+void FlagFilterLock::lock(const int myid) {
     for (int i = 1; i < n; i++) { // 1 to n-1
         level[i].lock(myid);
     }
-}
+} 
 
-
+/**
+ * @brief The unlock method for a FlagFilterLock.
+ * Releases by unlocking each level. 
+ * 
+ * @param myid Thread ID
+ */
 void FlagFilterLock::unlock(const int myid) {
     for (int i = n-1; i > 0; i--) { // n-1 to 1
         level[i].unlock(myid);
     }
 }
 
-/**
- * @brief Implements the level based type of filter lock.
- * 
- */
-class LevelFilterLock {
 
-    private: 
 
-    public:
-    void lock() {
-
-    }
-
-    void unlock() {
-
-    }
-
-};
