@@ -32,7 +32,7 @@ public:
 
 };
 
-PL lock;
+FlagFilterLock lock(5);
 
 void increment (int &counter, const int myid) {
     for (int i = 0; i < 1000; i++)
@@ -49,11 +49,9 @@ void increment (int &counter, const int myid) {
 int main(int argc, char const *argv[])
 {
     int counter = 0;
+    
     thread t1(increment, ref(counter), 0);
-    thread t2(increment, ref(counter), 1);
-
     t1.join();
-    t2.join();
 
     return 0;
 }

@@ -12,11 +12,12 @@ using namespace std;
 // Class Declarations
 class GPL {
 
-    private:
-    vector<atomic<bool>> flags;
+private:
+    atomic<bool> *flags; // Pointer to some array of atomic flags
     atomic<int> victim; 
+    const int n; // number of threads/processes 
 
-    public:
+public:
     GPL(int n);
 
     void lock(const int myid);
@@ -26,11 +27,11 @@ class GPL {
 
 class FlagFilterLock : public Lock {
 
-    private:
+private:
     vector<GPL> level; // pointer to a GPL array
-    int n; // Number of Levels
+    const int n; // Number of Levels
 
-    public:
+public:
     FlagFilterLock(int n);
     void lock(const int myid) override;
     void unlock(const int myid) override;

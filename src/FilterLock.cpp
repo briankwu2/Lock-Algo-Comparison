@@ -7,11 +7,13 @@ using namespace std;
  * @note This should work the same as the two process Peterson's Lock!
  * FIXME:Test to make sure
  */
-GPL::GPL(int n) {
-    for (int i = 0; i < n; i++) {
-        flags.push_back(false);
-    }
+GPL::GPL(int num) 
+    : n{num}
+    , flags{new atomic<bool>[n]} 
+{
 }
+
+
  /**
  * @brief Public Lock method for GPL.
  * Spins until process p is not the victim OR no other processes are interested
@@ -42,7 +44,7 @@ void GPL::unlock(const int myid) {
  * False: if all other flags are false
  */
 bool GPL::otherFlagExists(const int myid) {
-    for (int i = 0; i < flags.size(); i++) {
+    for (int i = 0; i < n; i++) {
         if (myid == i) // Ignore my own flag 
             continue;
         if (flags[i] == true) {
@@ -58,10 +60,12 @@ bool GPL::otherFlagExists(const int myid) {
  * 
  * @param n // Number of Threads that will compete for this lock object. 
  */
-FlagFilterLock::FlagFilterLock(int n) {
-    vector<GPL> level(n, GPL(n)); // Creates a vector of n levels (GPL)
-    this->level = level;
-    this->n = n;
+FlagFilterLock::FlagFilterLock(int num)
+    : n{num} 
+{
+    for (int i = 0; i < n; i++) {
+        level.push_back(GPL(n));
+    }
 }
 
 /**

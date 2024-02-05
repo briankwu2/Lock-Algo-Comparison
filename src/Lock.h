@@ -8,6 +8,8 @@ class Lock {
 public:
     virtual void lock(const int) = 0;
     virtual void unlock(const int) = 0;
+
+    virtual ~Lock() = default; // Default Deconstructor
 };
 
 #endif // LOCK_H
