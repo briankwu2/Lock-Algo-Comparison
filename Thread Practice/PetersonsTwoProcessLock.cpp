@@ -49,9 +49,15 @@ void increment (int &counter, const int myid) {
 int main(int argc, char const *argv[])
 {
     int counter = 0;
-    
-    thread t1(increment, ref(counter), 0);
-    t1.join();
+    vector<thread> threads; 
+
+    for (int i = 0; i < 5; i++) {
+        threads.emplace_back(increment, ref(counter), i); // In-Place instantiation of thread. (Cannot move/copy)
+    }
+
+    for (int i = 0; i < 5; i++) {
+        threads[i].join();
+    }
 
     return 0;
 }

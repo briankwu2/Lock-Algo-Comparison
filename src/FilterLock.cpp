@@ -63,10 +63,24 @@ bool GPL::otherFlagExists(const int myid) {
 FlagFilterLock::FlagFilterLock(int num)
     : n{num} 
 {
+    // FIXME: 
+    /*
+        To-Do:
+        - Fix the reason why the vector is saying that the GPL class is not constructable. Try
+        to create a GPL class in a different test program
+        - If that just absolutely refuses to work, rid the whole project of atomics and consts, 
+        and try to compile that way. (In a different branch of course)
+        - Alternatively, just try to create an array of objects instead?
+
+    */
+    level.reserve(n); // Pre-allocates space for n number of GPL pointers.
     for (int i = 0; i < n; i++) {
-        level.push_back(GPL(n));
+
+        level.push_back(new GPL(n)); // Creates a pointer and pushes it into the vector
     }
 }
+
+
 
 /**
  * @brief The lock method for a FlagFilterLock.
@@ -75,7 +89,7 @@ FlagFilterLock::FlagFilterLock(int num)
  */
 void FlagFilterLock::lock(const int myid) {
     for (int i = 1; i < n; i++) { // 1 to n-1
-        level[i].lock(myid);
+        (*level[i]).lock(myid);
     }
 } 
 
@@ -87,7 +101,7 @@ void FlagFilterLock::lock(const int myid) {
  */
 void FlagFilterLock::unlock(const int myid) {
     for (int i = n-1; i > 0; i--) { // n-1 to 1
-        level[i].unlock(myid);
+        (*level[i]).unlock(myid);
     }
 }
 

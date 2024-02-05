@@ -28,7 +28,7 @@ public:
 class FlagFilterLock : public Lock {
 
 private:
-    vector<GPL> level; // pointer to a GPL array
+    vector<GPL*> level; // pointer to a GPL array
     const int n; // Number of Levels
 
 public:
