@@ -26,12 +26,12 @@ See https://en.wikipedia.org/wiki/Memory_ordering.
 
 ## TODO
 - [X] Implement a timer using the chrono library, and time a basic function.
-- [ ] Implement the timer into the simple PL algorithm.
+- [X] Implement the timer into the simple PL algorithm.
     - [ ] Time it, and form a structure to collect data over
         1. Multiple Runs of the program
         2. Into a file without disrupting the performance
 - [ ] Implement the main function, create a modular increment function that takes some Lock object and runs its lock functions.
-- [ ] Implement the timing of each thread. Collect system throughput and turnaround time.
+- [X] Implement the timing of each thread. Collect system throughput and turnaround time.
     - [ ] Use python to create plots as a function of logical thread and time.
 
 ## Questions
