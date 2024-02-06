@@ -63,24 +63,12 @@ bool GPL::otherFlagExists(const int myid) {
 FlagFilterLock::FlagFilterLock(int num)
     : n{num} 
 {
-    // FIXME: 
-    /*
-        To-Do:
-        - Fix the reason why the vector is saying that the GPL class is not constructable. Try
-        to create a GPL class in a different test program
-        - If that just absolutely refuses to work, rid the whole project of atomics and consts, 
-        and try to compile that way. (In a different branch of course)
-        - Alternatively, just try to create an array of objects instead?
-
-    */
     level.reserve(n); // Pre-allocates space for n number of GPL pointers.
     for (int i = 0; i < n; i++) {
 
         level.push_back(new GPL(n)); // Creates a pointer and pushes it into the vector
     }
 }
-
-
 
 /**
  * @brief The lock method for a FlagFilterLock.
@@ -106,4 +94,58 @@ void FlagFilterLock::unlock(const int myid) {
 }
 
 
+// LevelFilterLock Implementation --------------------------
+LevelFilterLock::LevelFilterLock(int num)
+    : n{num}
+    , level{new atomic<int>[n]}
+    , victim{new atomic<int>[n]}
+{
+}
 
+/**
+ * @brief Lock method for LevelFilterLock.
+ * Contests for the lock through each level.
+ * Claims a spot on the level, and gets through if either:
+ * 1. There is no other processes above or equal to it contesting the lock.
+ * 2. They are not the victim.
+ * 
+ * @param myid 
+ */
+void LevelFilterLock::lock(const int myid) {
+    for (int i = 1; i < n - 1; i++) {
+        level[myid] = i;
+        victim[i] = myid;
+        while(existsHigherProcess(myid, i) && victim[i] == myid);
+    }
+    
+}
+
+/**
+ * @brief Unlock method for the LevelFilterLock.
+ * No longer contesting for lock, setting interest to 0.
+ * @param myid Process/Thread ID 
+ */
+void LevelFilterLock::unlock(const int myid) {
+    level[myid] = 0; 
+}
+
+/**
+ * @brief Finds if there is any other process that is
+ * also contesting the lock in a higher level 
+ * 
+ * @param myid Process/Thread ID 
+ * @param currLevel The level to compare other processes against 
+ * @returns 
+ * True: if there is some process that is in a higher or equal level
+ * False: if all other processes are in a lower level 
+ */
+bool LevelFilterLock::existsHigherProcess(const int myid, const int currLevel) {
+    for (int i = 0; i < n; i++) {
+        if (myid == i) // Ignore my own flag 
+            continue;
+        if (level[i] >= currLevel) {
+            return true;
+        }
+    }
+    return false;
+}

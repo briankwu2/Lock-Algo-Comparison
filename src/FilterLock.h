@@ -38,6 +38,18 @@ public:
 
 };
 
-class LevelFilterLock;
+class LevelFilterLock : public Lock {
+private:
+    atomic<int> *level; // Level Array of size n
+    atomic<int> *victim; // Victim Array of size n
+    const int n; // Number of processes/threads
+
+public:
+    LevelFilterLock(int n);
+    void lock(const int myid) override;
+    void unlock(const int myid) override;
+    bool existsHigherProcess(const int myid, const int currLevel);
+
+};
 
 #endif // FILTER_LOCK_H

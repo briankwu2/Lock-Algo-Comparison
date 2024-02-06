@@ -13,6 +13,7 @@ If one process is interested, then turn flag[myid] true.
 Also yield to the other process first and set victim = myid
 To get the lock, the other process must be not trying to get the lock or the victim is not me
 
+EDIT: File has been edited to run FlagFilterLock instead as a test run.
 */
 private:
     // These are shared variables!
