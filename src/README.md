@@ -21,3 +21,28 @@ mutual exclusion.
 See https://en.wikipedia.org/wiki/Memory_ordering.
 - Therefore the <atomic> library guarantees that the order that key concurrency variables may be stable.
 - Otherwise concurrency is still maintained primarily through the lock algorithims, and nothing else significant actually changes.
+
+
+
+## TODO
+- [X] Implement a timer using the chrono library, and time a basic function.
+- [ ] Implement the timer into the simple PL algorithm.
+    - [ ] Time it, and form a structure to collect data over
+        1. Multiple Runs of the program
+        2. Into a file without disrupting the performance
+- [ ] Implement the main function, create a modular increment function that takes some Lock object and runs its lock functions.
+- [ ] Implement the timing of each thread. Collect system throughput and turnaround time.
+    - [ ] Use python to create plots as a function of logical thread and time.
+
+## Questions
+- How should I structure the data collected to be easily processed?
+    - Vector<double> for each thread. Global vector for each thread.
+    - Find average turnaround time, Find average system throughput by taking total time for each thread to complete, divided by number of CS executed.
+    - Write the turnaround time into a file after joining
+- Each thread should have its own "Timer" object.
+- Do I want the number of CS requests to be randomized?
+    - How do I have this be consistent? Seed it?
+
+
+
+
