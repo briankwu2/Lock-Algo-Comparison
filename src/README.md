@@ -14,6 +14,8 @@
 
 
 # Some Additional Considerations
+
+## Atomicity and Memory Ordering
 - Note that the <atomic> library is used as a safeguard to ensure that "memory re-ordering" does
 not occur, and potentially void mutual exclusion. Where memory ordering is a modern optimization technique
 used in most CPUs that may potentially void the order of read and write operations that will guarantee
@@ -22,9 +24,11 @@ See https://en.wikipedia.org/wiki/Memory_ordering.
 - Therefore the <atomic> library guarantees that the order that key concurrency variables may be stable.
 - Otherwise concurrency is still maintained primarily through the lock algorithims, and nothing else significant actually changes.
 
+## Running & Data Collection Concerns
+- Make sure to cut out any overhead (e.g. cout debug statements, debug option in compilation, etc.) when running the program for real data.
+- Make sure to exit out of all applications to ensure that there is nothing else sharing the CPU (as much as reasonable). Includes web-browser and other applications.
 
-
-## TODO
+# TODO
 - [X] Implement a timer using the chrono library, and time a basic function.
 - [X] Implement the timer into the simple PL algorithm.
     - [ ] Time it, and form a structure to collect data over
