@@ -32,18 +32,7 @@ int main(int argc, char const *argv[])
     t1.join();
     t2.join();
 
-    cout << "Total Turnaround Time for Thread 0: " << timeE1 << " seconds" << endl;
-    cout << "Total Turnaround Time for Thread 1: " << timeE2 << " seconds" << endl;
-    cout << endl;
-    cout << "Average Turnaround Time for Thread 0: " << timeE1 / NUM_ITERATIONS << endl;
-    cout << "Average Turnaround Time for Thread 1: " << timeE2 / NUM_ITERATIONS << endl;
-    cout << endl;
-
-    cout << "System Throughput for Thread 0: " << NUM_ITERATIONS / timeE1 << endl;
-    cout << "System Throughput for Thread 1: " << NUM_ITERATIONS / timeE2 << endl;
-
-    cout << "All Done!" << endl;
-    return 0;
+        return 0;
 }
 
 /**
@@ -85,6 +74,15 @@ void increment (int &counter, const int myid, Timer &timer, double &timeElapsed,
         counter++;
         lock.unlock(myid); 
         timeElapsed += timer.elapsed(); // Accumulate Turnaround Time
+    }
+
+}
+void displayResults (vector<double> timeE) {
+    for (int i = 0; i < timeE.size(); i++) {
+        cout << "Total Turnaround Time for Thread " << i << ": " << timeE[i] << " seconds" << endl;
+        cout << "Average Turnaround Time for Thread " << i << ": " << timeE[i] / NUM_ITERATIONS << " seconds" << endl;
+        cout << "System Throughput for Thread " << i << ": " << NUM_ITERATIONS / timeE[i] << " seconds" << endl;
+        cout << endl;
     }
 
 }

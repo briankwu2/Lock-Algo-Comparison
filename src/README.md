@@ -34,10 +34,14 @@ See https://en.wikipedia.org/wiki/Memory_ordering.
     - [ ] Time it, and form a structure to collect data over
         1. Multiple Runs of the program
         2. Into a file without disrupting the performance
-- [ ] Implement the main function, create a modular increment function that takes some Lock object and runs its lock functions.
+- [X] Implement the main function, create a modular increment function that takes some Lock object and runs its lock functions.
 - [X] Implement the timing of each thread. Collect system throughput and turnaround time.
-    - [ ] Use python to create plots as a function of logical thread and time.
-
+- [ ] Implement Bakery
+    - [ ] Test the bakery algorithm to ensure expected shared counter value is obtained
+- [ ] Implement Tournament Tree
+    - [ ] Test the algorithm to ensure expected shared counter value is obtained
+- [ ]
+- [ ] Use python to create plots as a function of logical thread and time.
 ## Questions
 - How should I structure the data collected to be easily processed?
     - Vector<double> for each thread. Global vector for each thread.
