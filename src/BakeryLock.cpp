@@ -1,10 +1,11 @@
-#include "Bakery.h"
+#include "BakeryLock.h"
 
-//FIXME: This algorithm has not been tested yet
+/*
+FIXME: This algorithm has not been tested yet
+*/
 
 
-
-Bakery::Bakery(const int num) 
+BakeryLock::BakeryLock(const int num) 
     : n{num}
     , token{new atomic<int>[n]}
     , flag{new atomic<bool>[n]}
@@ -12,13 +13,13 @@ Bakery::Bakery(const int num)
 }
 
 /**
- * @brief Locking method for the Bakery algorithm.
+ * @brief Locking method for the BakeryLock algorithm.
  * Allows critical section for the thread/process that has the lowest token.
  * If two processes have the same token number, let the smaller process id win.
  *  
  * @param myid 
  */
-void Bakery::lock(const int myid) {
+void BakeryLock::lock(const int myid) {
     flag[myid] = true;
     token[myid] = 1 + *max_element(token, token+n); // FIXME: Test if this works on an atomic array
     flag[myid] = false;
@@ -38,6 +39,6 @@ void Bakery::lock(const int myid) {
  * 
  * @param myid 
  */
-void Bakery::unlock(const int myid) {
+void BakeryLock::unlock(const int myid) {
     token[myid] = 0;
 }

@@ -10,7 +10,7 @@
 #include "Bakery.h"
 
 #define NUM_ITERATIONS 1000000
-
+#define NUM_PROCESSES
 using namespace std;
 
 //Prototypes
@@ -20,6 +20,14 @@ void displayResults(vector<double>);
 
 int main(int argc, char const *argv[])
 {
+
+    // Different Types of Locks
+
+    FlagFilterLock flagFilterLock(NUM_PROCESSES);
+    LevelFilterLock levelFilterLock(NUM_PROCESSES);
+    BakeryLock bakeryLock(NUM_PROCESSES);
+    TournamentTree tourneyLock(NUM_PROCESSES);
+
     int counter = 0;
     Timer timer1;
     Timer timer2;

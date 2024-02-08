@@ -1,17 +1,17 @@
-#ifndef BAKERY_H
-#define BAKERY_H
+#ifndef BAKERY_LOCK_H
+#define BAKERY_LOCK_H
 #include "Lock.h"
 #include <atomic>
 #include <algorithm>
 
 using namespace std;
 /**
- * @brief A class based on Lamport's Bakery Algorithm
+ * @brief A class based on Lamport's BakeryLock Algorithm
  * Names of variables and other such are based on class pseudocode.
  * Therefore, variable names and other things are based differently than his original pseudocode.
  */
 
-class Bakery : public Lock {
+class BakeryLock : public Lock {
 private:
     const int n; // Number of Processes
     atomic<int> *token; // Array of Tokens of size n
@@ -19,11 +19,11 @@ private:
 
 
 public:
-    Bakery(const int num);
+    BakeryLock(const int num);
     void lock(const int myid) override;
     void unlock(const int myid) override;
     bool compareTokens(int *token);
 
 };
 
-#endif // BAKERY_H
+#endif // BAKERY_LOCK_H

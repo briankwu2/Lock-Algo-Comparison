@@ -2,8 +2,10 @@
 #define TOURNAMENT_TREE_H
 
 #include <atomic>
-#include "Lock.h"
+#include <vector>
 #include <unordered_map>
+#include <algorithm>
+#include "Lock.h"
 
 using namespace std;
 
@@ -22,11 +24,11 @@ private:
     atomic<bool> flag[2] = {false, false};
     atomic<int> victim; 
     unordered_map<int, int> id_map; // {myid, index}
+    int pickFlagIndex ();
 
 public:
     void lock(const int myid);
     void unlock(const int myid);
-    int pickFlagIndex ();
 
 };
 
@@ -44,7 +46,8 @@ public:
     TournamentTree(const int num);
     void lock(const int myid) override;
     void unlock(const int myid) override;
-    int nextLockIndex(int);
+    int nextLockIndex(int currIndex);
+    vector<int> getTopToBottomOrder(const int myid);
 
 
 };
