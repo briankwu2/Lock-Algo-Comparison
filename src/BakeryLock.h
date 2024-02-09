@@ -4,13 +4,13 @@
 #include <atomic>
 #include <algorithm>
 
-using namespace std;
+using std::atomic;
+
 /**
  * @brief A class based on Lamport's BakeryLock Algorithm
  * Names of variables and other such are based on class pseudocode.
  * Therefore, variable names and other things are based differently than his original pseudocode.
  */
-
 class BakeryLock : public Lock {
 private:
     const int n; // Number of Processes

@@ -3,15 +3,16 @@
     - Filter Lock:
         - Array of Flag Arrays Version
         - One Level Array Version
-    - Tournament Tree with GPL
+    - Tournament Tree with PL
     - Lamport's Bakery Lock
 - Measures system throughput and turnaround time as a function of threads.
 
 # Brief Implementation Details
-- All types of lock algorithms inherit from an abstract base class called "Lock"
-- The main file will run and collect results from the types of locks and measure against each other
+- All types of lock algorithms inherit from an abstract base class called "Lock". In this way,
+the function that the threads will call can use any lock function from any Lock inherited class.
 - The critical section implements some shared counter.
-
+- Turnaround Time is calculated as start of request (before lock()), and after unlock().
+- The main file will run and collect results from the types of locks and measure against each other.
 
 # Some Additional Considerations
 
@@ -22,26 +23,33 @@ used in most CPUs that may potentially void the order of read and write operatio
 mutual exclusion.
 See https://en.wikipedia.org/wiki/Memory_ordering.
 - Therefore the <atomic> library guarantees that the order that key concurrency variables may be stable.
+- It is important however to note that the shared counter itself is **not** atomic, as that will void the
+point of using locks.
 - Otherwise concurrency is still maintained primarily through the lock algorithims, and nothing else significant actually changes.
+
 
 ## Running & Data Collection Concerns
 - Make sure to cut out any overhead (e.g. cout debug statements, debug option in compilation, etc.) when running the program for real data.
 - Make sure to exit out of all applications to ensure that there is nothing else sharing the CPU (as much as reasonable). Includes web-browser and other applications.
+- **NOTE**: Look up how to run and prep program for TACC servers.
 
 # TODO
 - [X] Implement a timer using the chrono library, and time a basic function.
 - [X] Implement the timer into the simple PL algorithm.
-    - [ ] Time it, and form a structure to collect data over
-        1. Multiple Runs of the program
-        2. Into a file without disrupting the performance
+    - [X] Time it, and form a structure to collect data over
 - [X] Implement the main function, create a modular increment function that takes some Lock object and runs its lock functions.
 - [X] Implement the timing of each thread. Collect system throughput and turnaround time.
-- [ ] Implement Bakery
-    - [ ] Test the bakery algorithm to ensure expected shared counter value is obtained
-- [ ] Implement Tournament Tree
+- [X] Implement Bakery
+    - [X] Test the bakery algorithm to ensure expected shared counter value is obtained
+- [X] Implement Tournament Tree
     - [ ] Test the algorithm to ensure expected shared counter value is obtained
-- [ ]
+        - Deadlocks! :(, see whats going wrong
+- [ ] Implement main function for testing over multiple runs and data collection/structuring for just PL lock.
+    - [ ] Implement for the rest of the locks
+- [ ] Fix the TournamentTree.xopp, as the number of nodes (locks) is incorrect and is not n - 1 purely. ()
 - [ ] Use python to create plots as a function of logical thread and time.
+
+
 ## Questions
 - How should I structure the data collected to be easily processed?
     - Vector<double> for each thread. Global vector for each thread.

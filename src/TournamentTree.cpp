@@ -1,4 +1,5 @@
 #include "TournamentTree.h"
+#include <iostream>
 
 // PL Implementation
 /** FIXME: The whole new PL needs to be tested
@@ -17,7 +18,8 @@ void PL::lock(const int myid) {
 }
 
 /**
- * @brief 
+ * @brief Unlock method. Firstly, removes the id that maps to the flag index.
+ * Then releases the lock.
  * 
  * @param myid 
  */
@@ -37,9 +39,12 @@ int PL::pickFlagIndex () {
     if (!flag[0].compare_exchange_strong(compare, true)) { 
         compare = false;
         if (!flag[1].compare_exchange_strong(compare, true)) {
-            //exit(); // Shouldn't be possible to fail twice, means a third process attempted to lock
+            std::cout << "ERROR in pickFlagIndex()! Both flags are true! Exiting..." << std::endl;
+            exit(EXIT_FAILURE); // Shouldn't be possible to fail twice, means a third process attempted to lock
         }
+        return 1;
     }
+    return 0;
 }
 
 // Tournament Tree Implementation
@@ -64,6 +69,11 @@ TournamentTree::TournamentTree (const int num)
  */
 void TournamentTree::lock (const int myid) {
     int lockIndex = nextLockIndex(myid + n - 1); // Finds the first lock associated with the thread id
+    if (lockIndex > n - 1) {
+        std::cout << "ERROR in lock()! lockIndex is out of bounds! Exiting..." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
     while (true) {
         PLArray[lockIndex].lock(myid); // Compete for the current lock
         lockIndex = nextLockIndex(lockIndex); // Find the next lock index (parent lock)
@@ -86,7 +96,7 @@ void TournamentTree::unlock (const int myid) {
     }
 }
 
-/** FIXME: Test this function
+/** 
  * @brief Gets the next lock index, aka the parent lock.
  * Uses the function floor{(n-1)/2} .
  * @param currIndex 

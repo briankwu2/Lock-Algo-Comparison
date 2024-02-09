@@ -7,7 +7,8 @@
 #include <atomic> 
 #include "Lock.h"
 
-using namespace std;
+using std::atomic;
+using std::vector;
 
 // Class Declarations
 class GPL {

@@ -12,6 +12,7 @@
                 // "${fileDirname}/${fileBasenameNoExtension}",
                 "-g",
                 "${workspaceFolder}/src/*.cpp",
+                "${workspaceFolder}/src/TimerWrapper.h",
                 "${file}",
                 "-o",
                 "${workspaceFolder}/myProgram"

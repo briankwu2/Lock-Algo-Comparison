@@ -7,7 +7,9 @@
 #include <algorithm>
 #include "Lock.h"
 
-using namespace std;
+using std::atomic;
+using std::vector;
+using std::unordered_map;
 
 /**
  * @brief Basic Idea of Petersons Lock:
@@ -48,8 +50,6 @@ public:
     void unlock(const int myid) override;
     int nextLockIndex(int currIndex);
     vector<int> getTopToBottomOrder(const int myid);
-
-
 };
 
 #endif // TOURNAMENT_TREE_H
