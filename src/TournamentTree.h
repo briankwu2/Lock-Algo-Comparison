@@ -26,12 +26,11 @@ private:
     atomic<bool> flag[2] = {false, false};
     atomic<int> victim; 
     unordered_map<int, int> id_map; // {myid, index}
-    int pickFlagIndex ();
 
 public:
     void lock(const int myid);
     void unlock(const int myid);
-
+    int pickFlagIndex (); // FIXME: Put back in private after testing
 };
 
 /**

@@ -9,8 +9,8 @@
 #include "../src/TournamentTree.h"
 #include "../src/BakeryLock.h"
 
-#define NUM_ITERATIONS 1000
-#define NUM_PROCESSES 2
+#define NUM_ITERATIONS 100000
+#define NUM_PROCESSES 3
 
 using std::thread;
 using std::cout;
@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
     // If there is a big tree, there will be multiple nodes, and even 2 processes will rest only on
     // the leaf nodes, and will have to fight to the top.
     // Results
-    TournamentTree lock(10);
+    TournamentTree lock(NUM_PROCESSES);
     
     for (int i = 0; i < NUM_PROCESSES; i++) {
         t.emplace_back(thread(incrPrint, ref(counter), i, ref(lock))); 

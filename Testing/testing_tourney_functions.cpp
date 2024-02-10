@@ -1,7 +1,18 @@
 #include "../src/TournamentTree.h"
 #include <iostream>
+#include <thread>
 
 using namespace std;
+
+
+void increment (int &counter, PL &lock, int id) {
+    for (int i = 0; i < 1000000; i++) {
+        lock.lock(id);
+        counter++;
+        cout << "Thread " << id << " Counter: " << counter << endl;
+        lock.unlock(id);
+    }
+}
 
 int main(int argc, char const *argv[])
 {
@@ -34,12 +45,16 @@ int main(int argc, char const *argv[])
     // }
 
 
-   // Test individual locking on a big tree.
+    // Suspect that pickFlagIndex() is not working correctly.
+    // Try to just have 2 processes and see if there is a possible deadlock.
+    PL pl;
+    // Create 2 threads that run the lock function of pl
+    int counter = 0;
+    thread t1(increment, ref(counter), ref(pl), 0);
+    thread t2(increment, ref(counter), ref(pl), 1);
 
-    
-
-
-
+    t1.join();
+    t2.join();
 
 
     return 0;
