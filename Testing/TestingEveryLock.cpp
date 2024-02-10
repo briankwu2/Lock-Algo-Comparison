@@ -10,13 +10,8 @@
 #include "../src/BakeryLock.h"
 
 #define NUM_ITERATIONS 1000
-#define NUM_PROCESSES 2 
+#define NUM_PROCESSES 2
 
-/*
-15000 expected result 
-
-
-*/
 using std::thread;
 using std::cout;
 using std::endl;
@@ -32,10 +27,10 @@ int main(int argc, char const *argv[])
 {
     // Use incrPrint to see the output of the threads
 
-    // Spawn 15 threads
     vector<thread> t;
     int counter = 0;
-    PL lock;
+
+    TournamentTree lock(10);
     
     for (int i = 0; i < NUM_PROCESSES; i++) {
         t.emplace_back(thread(incrPrint, ref(counter), i, ref(lock))); 

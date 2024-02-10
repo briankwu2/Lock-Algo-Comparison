@@ -56,7 +56,9 @@ int PL::pickFlagIndex () {
  */
 TournamentTree::TournamentTree (const int num)
     : n{num}
-    , PLArray{new PL[n-1]}
+    , numNodes{(n % 2 == 0) ? n - 1: n} // If n is even, numNodes = n - 1, else p = numNodes.
+    , PLArray{new PL[numNodes]} // Might be dangerous to depend on a previous value, but will follow order of member initialization
+    // in class declaration (which is the order of the members in this case)
 {
 }
 
@@ -68,8 +70,8 @@ TournamentTree::TournamentTree (const int num)
  * if following the structured order of a binary tree, we add n - 1 to myid.
  */
 void TournamentTree::lock (const int myid) {
-    int lockIndex = nextLockIndex(myid + n - 1); // Finds the first lock associated with the thread id
-    if (lockIndex > n - 1) {
+    int lockIndex = nextLockIndex(getPseudoNodeIndex(myid)); // Finds the first lock associated with the thread id
+    if (lockIndex >= numNodes) {
         std::cout << "ERROR in lock()! lockIndex is out of bounds! Exiting..." << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -90,8 +92,8 @@ void TournamentTree::lock (const int myid) {
  * @param myid 
  */
 void TournamentTree::unlock (const int myid) {
-    vector<int> order = getTopToBottomOrder(myid);
-    for (int i = order.size() - 1; i >= 0; i--) {
+    vector<int> order = getTopToBottomOrder(getPseudoNodeIndex(myid));
+    for (int i = 0; i < order.size(); i++) {
         PLArray[i].unlock(myid);
     }
 }
@@ -106,23 +108,24 @@ int TournamentTree::nextLockIndex (int currIndex) {
     return ((currIndex - 1) / 2); // Equivalent to floor of (n-1)/2 (because int division)
 }
 
-/** FIXME: Test this function
+/** 
  * @brief 
  * 
  * @param myid 
  * @return vector<int> - the order from top to bottom for lock
  */
-vector<int> TournamentTree::getTopToBottomOrder (const int myid) {
-    // Get the order bottom to up
-    int tempIndex = myid + n - 1;
+vector<int> TournamentTree::getTopToBottomOrder (int currIndex) {
+    // Get the order bottom to up from some node index
     vector<int> order; // FIXME: Can pre-allocate logn elements for better performance
-    while (tempIndex != 0) {
-        tempIndex = nextLockIndex(tempIndex);
-        order.push_back(tempIndex); 
+    while (currIndex != 0) {
+        currIndex = nextLockIndex(currIndex);
+        order.push_back(currIndex); 
     }
-
     // Reverse the vector to get the order from top to bottom
     reverse(order.begin(), order.end());
-
     return order;
+}
+
+int TournamentTree::getPseudoNodeIndex (const int myid) {
+    return myid + numNodes;
 }

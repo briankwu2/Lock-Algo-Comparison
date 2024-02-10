@@ -41,6 +41,7 @@ public:
 class TournamentTree : public Lock {
 private:
     const int n; // Number of threads
+    const int numNodes; // Number of nodes in the tree
     PL *PLArray;
 
 
@@ -50,6 +51,7 @@ public:
     void unlock(const int myid) override;
     int nextLockIndex(int currIndex);
     vector<int> getTopToBottomOrder(const int myid);
+    int getPseudoNodeIndex (const int myid);
 };
 
 #endif // TOURNAMENT_TREE_H

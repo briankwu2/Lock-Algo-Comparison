@@ -44,6 +44,9 @@ point of using locks.
 - [X] Implement Tournament Tree
     - [ ] Test the algorithm to ensure expected shared counter value is obtained
         - Deadlocks! :(, see whats going wrong
+    - [ ] Found out that the issue was. Issues with how to index nodes that are not fully filled complete.
+        - aka n - 1 is not the formula for amount of lock nodes
+        - Assigning thread ids as pseudo children to locks is still same/similar. Add n (where n is number of nodes)
 - [ ] Implement main function for testing over multiple runs and data collection/structuring for just PL lock.
     - [ ] Implement for the rest of the locks
 - [ ] Fix the TournamentTree.xopp, as the number of nodes (locks) is incorrect and is not n - 1 purely. ()
