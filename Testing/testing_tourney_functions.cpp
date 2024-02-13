@@ -26,14 +26,14 @@ int main(int argc, char const *argv[])
     // }
 
     // Next test the getTopToBottomOrder with 100 indexes as well.
-    for (int i = 0; i < 100; i++) {
-        std::vector<int> order = tourTree.getTopToBottomOrder(i);
-        std::cout << "Index: " << i << " Order: ";
-        for (int j = 0; j < order.size(); j++) {
-            std::cout << order[j] << " ";
-        }
-        std::cout << std::endl;
-    }
+    // for (int i = 0; i < 100; i++) {
+    //     std::vector<int> order = tourTree.getTopToBottomOrder(i);
+    //     std::cout << "Index: " << i << " Order: ";
+    //     for (int j = 0; j < order.size(); j++) {
+    //         std::cout << order[j] << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
 
     // // Test the lock and unlock functions
     // // Lock and unlock 100 times

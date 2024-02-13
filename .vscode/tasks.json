@@ -13,6 +13,7 @@
                 "-g",
                 "${workspaceFolder}/src/*.cpp",
                 "${workspaceFolder}/src/TimerWrapper.h",
+                "${workspaceFolder}/src/dataFunctions.h",
                 "${file}",
                 "-o",
                 "${workspaceFolder}/myProgram"
