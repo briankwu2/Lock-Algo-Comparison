@@ -58,6 +58,9 @@
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 
+## Data Folder
+data/
+
 # Local History for Visual Studio Code
 .history/
 

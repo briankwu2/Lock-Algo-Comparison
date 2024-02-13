@@ -1,14 +1,19 @@
 #ifndef DATA_FUNCTIONS_H
 #define DATA_FUNCTIONS_H
-#include "TimerWrapper.h"
-#include "Lock.h"
+
 #include <vector>
 #include <iostream>
+#include <fstream>
+
+#include "TimerWrapper.h"
+#include "FilterLock.h"
+#include "TournamentTree.h"
+#include "BakeryLock.h"
 
 using std::vector;
 using std::cout;
 using std::endl;
-
+using std::ofstream;
 
 /**
  * @brief Standalone header file for data functions. 
@@ -18,12 +23,7 @@ using std::endl;
 
 // Parameters to be changed for testing
 #define NUM_ITERATIONS 1000000
-#define NUM_PROCESSES 2 
-
-// Prototypes to see what function are implemented
-// NOTE: Always change the prototype if the function is changed 
-void increment (ThreadParameters &tp);
-void incrDebug (ThreadParameters &tp);
+#define NUM_THREADS 4
 
 // Structs --------------------------------------
 
@@ -34,15 +34,17 @@ void incrDebug (ThreadParameters &tp);
 struct ThreadParameters {
 public:
     const int myid;
-    double &timeElapsed;
+    long double &timeElapsed;
+    long double &sysTimeElapsed;
     int &counter;
     Timer &tpTimer;
     Timer &sysTimer;
     Lock *lock;
 
-    ThreadParameters (const int id, double &te, int &c, Timer &tp, Timer &sys, Lock *l)
+    ThreadParameters (const int id, long double &te, long double &ste, int &c, Timer &tp, Timer &sys, Lock *l)
         : myid{id}
         , timeElapsed{te}
+        , sysTimeElapsed{ste}
         , counter{c}
         , tpTimer{tp}
         , sysTimer{sys}
@@ -61,7 +63,7 @@ public:
  * @param tp // ThreadParameters struct that will be used to pass parameters to the function.
  */
 void incrDebug (ThreadParameters &tp) {
-    double timeElapsed = tp.timeElapsed;
+    long double timeElapsed = tp.timeElapsed;
     int predCount;
     int &counter = tp.counter;
     const int myid = tp.myid;
@@ -95,23 +97,73 @@ void incrDebug (ThreadParameters &tp) {
  */
 void increment (ThreadParameters &tp) {
 
-    double &timeElapsed = tp.timeElapsed;
+    long double &timeElapsed = tp.timeElapsed;
+    long double &sysTimeElapsed = tp.sysTimeElapsed;
     int &counter = tp.counter;
     const int myid = tp.myid;
     Timer &tpTimer = tp.tpTimer;
     Timer &sysTimer = tp.sysTimer;
     Lock &lock = *tp.lock;
 
-
-
+    sysTimer.reset(); // Start Timing the System
     for (int i = 0; i < NUM_ITERATIONS; i++)
     {
-        timer.reset(); // Start Timing
+        tpTimer.reset(); // Start Timing
         lock.lock(myid); 
         counter++;
         lock.unlock(myid); 
-        timeElapsed += timer.elapsed(); // Accumulate Turnaround Time
+        timeElapsed += tpTimer.elapsed(); // Accumulate Turnaround Time
     }
+
+    sysTimeElapsed = sysTimer.elapsed(); // Accumulate System Time
+
+
+}
+
+
+Lock *selectLock(int lockType, int numThreads) {
+    Lock *lock;
+    switch (lockType) {
+        case 0:
+            lock = new FlagFilterLock(numThreads);
+            break;
+        case 1:
+            lock = new LevelFilterLock(numThreads);
+            break;
+        case 2:
+            lock = new TournamentTree(numThreads);
+            break;
+        case 3:
+            lock = new BakeryLock(numThreads);
+            break;
+        default:
+            cout << "Invalid lock type" << endl;
+            return nullptr;
+    }
+    return lock;
+}
+
+ofstream prepareFile (int lockType) {
+    ofstream file;
+    switch (lockType) {
+        case 0:
+            file.open("../data/FlagFilterLock.txt");
+            break;
+        case 1:
+            file.open("../data/LevelFilterLock.txt");
+            break;
+        case 2:
+            file.open("../data/TournamentTree.txt");
+            break;
+        case 3:
+            file.open("../data/BakeryLock.txt");
+            break;
+        default:
+            cout << "Invalid lock type" << endl;
+            return file;
+    }
+
+    return std::move(file);
 
 }
 

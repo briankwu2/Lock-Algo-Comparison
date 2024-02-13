@@ -3,13 +3,15 @@
 
 using namespace std;
 // PL Implementation
-/** FIXME: The whole new PL needs to be tested
+/** 
  * @brief Lock method for Petersons Lock.
  * First picks a flag (announce interest) and then yields to other process (victim is me).
  * Will be granted lock if other process is not interested (other flag is false),
  * or if curr process is not the victim. 
  * 
  * @param myid 
+ * 
+ * @bug There are deadlock issues, and some type of hashmap segmentation fault issue
  */
 void PL::lock(const int myid) {
     int index = pickFlagIndex();
@@ -83,7 +85,7 @@ void TournamentTree::lock (const int myid) {
     while (true) {
         lockIndex = nextLockIndex(lockIndex); // Find the next lock index (parent lock)
         PLArray[lockIndex].lock(myid); // Compete for the current lock
-        cout << "Thread " << myid << " has won the " << lockIndex << "'s lock." << endl; // FIXME: Remove the debug statement
+        // cout << "Thread " << myid << " has won the " << lockIndex << "'s lock." << endl; // FIXME: Remove the debug statement
         if (lockIndex <= 0) {
             break; // Process now gets the final lock for critical section
         }
@@ -99,7 +101,7 @@ void TournamentTree::lock (const int myid) {
 void TournamentTree::unlock (const int myid) {
     vector<int> order = getTopToBottomOrder(getPseudoNodeIndex(myid));
     for (auto const &i : order) {
-        cout << "Thread " << myid << " unlocking node " << i << endl; // FIXME: Remove the debug statement 
+        // cout << "Thread " << myid << " unlocking node " << i << endl; // FIXME: Remove the debug statement 
         PLArray[i].unlock(myid); // Unlocks the node in order 
     }
 }
