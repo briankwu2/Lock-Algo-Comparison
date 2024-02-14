@@ -14,7 +14,7 @@
                 "${workspaceFolder}/src/*.cpp",
                 "${workspaceFolder}/src/TimerWrapper.h",
                 "${workspaceFolder}/src/dataFunctions.h",
-                // "${file}",
+                "${file}",
                 "-o",
                 "${workspaceFolder}/myProgram"
             ],

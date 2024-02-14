@@ -16,8 +16,6 @@ void increment (int &counter, PL &lock, int id) {
 
 int main(int argc, char const *argv[])
 {
-    TournamentTree tourTree(2);
-
     // // Test the nextLockIndex function
     // // Loop through 100 indexes to check if the nextLockIndex function is working
     // for (int i = 0; i < 100; i++) {
@@ -50,8 +48,8 @@ int main(int argc, char const *argv[])
     PL pl;
     // Create 2 threads that run the lock function of pl
     int counter = 0;
-    thread t1(increment, ref(counter), ref(pl), 0);
-    thread t2(increment, ref(counter), ref(pl), 1);
+    thread t1(increment, ref(counter), ref(pl), 3);
+    thread t2(increment, ref(counter), ref(pl), 4);
 
     t1.join();
     t2.join();
