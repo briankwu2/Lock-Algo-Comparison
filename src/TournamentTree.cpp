@@ -2,6 +2,8 @@
 #include <iostream>
 
 using namespace std;
+
+
 // PL Implementation
 /** 
  * @brief Lock method for Petersons Lock.
@@ -11,13 +13,18 @@ using namespace std;
  * 
  * @param myid 
  * 
- * @bug There are deadlock issues, and some type of hashmap segmentation fault issue
  */
 void PL::lock(const int myid) {
     int index = pickFlagIndex();
+
+    if (index == 0) {
+        A.myid = myid;
+    }
+    else {
+        B.myid = myid;
+    }
+
     victim = index; 
-    id_map[myid] = index; // To help pass to unlock()
-    // cout << "Thread " << myid << " has picked the " << index << "'s flag." << endl; // FIXME: Remove the debug statement
     while(flag[1-index] && victim == index); // Waits until the other process is not interested or they yield
 }
 
@@ -28,8 +35,7 @@ void PL::lock(const int myid) {
  * @param myid 
  */
 void PL::unlock(const int myid) {
-    int index = id_map[myid];
-    id_map.erase(myid);
+    int index = (A.myid == myid) ? 0 : 1; // Get the index of the flag that was locked associated with myid
     flag[index] = false;
 }
 
@@ -126,6 +132,7 @@ int TournamentTree::nextLockIndex (int currIndex) {
 vector<int> TournamentTree::getTopToBottomOrder (int currIndex) {
     // Get the order bottom to up from some node index
     vector<int> order; // FIXME: Can pre-allocate logn elements for better performance
+
     while (currIndex != 0) {
         currIndex = nextLockIndex(currIndex);
         order.push_back(currIndex); 

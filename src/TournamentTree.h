@@ -3,13 +3,30 @@
 
 #include <atomic>
 #include <vector>
-#include <unordered_map>
 #include <algorithm>
 #include "Lock.h"
 
 using std::atomic;
 using std::vector;
-using std::unordered_map;
+
+/**
+ * @brief A strange way of recording the index of the flag and the id that is associated with it.
+ * Implemented this way after having trouble with the Petersons Lock that
+ * was using a hashmap/unordered_map to store the id and the flag index. 
+ * There was concurrency issues with the unordered_map as there was undefined behavior if
+ * the id was removed from the map while the other process was trying to access it regardless
+ * of what the expected behavior was.
+ * 
+ */
+struct Record {
+public:
+    const int index;
+    int myid;
+
+    Record (int index)
+        : index(index){
+    }
+};
 
 /**
  * @brief Basic Idea of Petersons Lock:
@@ -25,12 +42,13 @@ private:
     // These are shared variables!
     atomic<bool> flag[2] = {false, false};
     atomic<int> victim; 
-    unordered_map<int, int> id_map; // {myid, index}
+    Record A{0}; // Permanently initialized with flag index 0
+    Record B{1}; // Permanently initialized with flag index 1
+    int pickFlagIndex (); 
 
 public:
     void lock(const int myid);
     void unlock(const int myid);
-    int pickFlagIndex (); // FIXME: Put back in private after testing
 };
 
 /**

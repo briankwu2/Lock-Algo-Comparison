@@ -10,7 +10,7 @@
 #include "../src/BakeryLock.h"
 
 #define NUM_ITERATIONS 100000
-#define NUM_PROCESSES 2
+#define NUM_PROCESSES 10
 
 using std::thread;
 using std::cout;
