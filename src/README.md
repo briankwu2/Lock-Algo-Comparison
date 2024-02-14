@@ -64,9 +64,10 @@ point of using locks.
     dynamic memory allocation
     - Double check then main for any memory leaks as well.
 - [ ] Create proper destructors and check for memory leaks!
-    - [ ] FilterLock
-        - [ ] FlagFilterLock
-        - [ ] LevelFilterLock
+    - [X] FilterLock
+        - [X] FlagFilterLock
+        - [X] LevelFilterLock
+        - [ ] Tested in Valgrind?
     - [ ] BakeryLock
     - [ ] TournamentLock
 - [ ] Double check on valgrind for leaks!

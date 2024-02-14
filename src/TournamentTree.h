@@ -52,18 +52,18 @@ public:
 };
 
 /**
- * @brief 
+ * @brief Tournament Tree Lock that implements a modified version of the Peterson's Lock for each lock node.
  * 
  */
 class TournamentTree : public Lock {
 private:
     const int n; // Number of threads
     const int numNodes; // Number of nodes in the tree
-    PL *PLArray;
-
+    PL *PLArray; // Array of Peterson's Locks
 
 public:
     TournamentTree(const int num);
+    ~TournamentTree();
     void lock(const int myid) override;
     void unlock(const int myid) override;
     int nextLockIndex(int currIndex);

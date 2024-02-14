@@ -58,7 +58,7 @@ int PL::pickFlagIndex () {
 }
 
 
-// Tournament Tree Implementation
+// Tournament Tree Implementation -------------------------------------------
 
 /**
  * @brief Construct a new Tournament Tree:: Tournament Tree object
@@ -71,7 +71,14 @@ TournamentTree::TournamentTree (const int num)
     , PLArray{new PL[numNodes]} // Might be dangerous to depend on a previous value, but will follow order of member initialization
     // in class declaration (which is the order of the members in this case)
 {
-    
+}
+
+/**
+ * @brief Destroy the Tournament Tree:: Tournament Tree object
+ * Deletes and frees up the PLArray.
+ */
+TournamentTree::~TournamentTree () {
+    delete[] PLArray;
 }
 
 /**

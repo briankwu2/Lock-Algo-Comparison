@@ -1,10 +1,30 @@
 #include "BakeryLock.h"
 
+
+/**
+ * @brief Construct a new Bakery Lock:: Bakery Lock object
+ * Initializes all tokens to 0 and flags to false.
+ * @param num 
+ */
 BakeryLock::BakeryLock(const int num) 
     : n{num}
     , token{new atomic<int>[n]}
     , flag{new atomic<bool>[n]}
 {
+    for (int i = 0; i < n; i++) {
+        token[i] = 0;
+        flag[i] = false;
+    }
+
+}
+
+/**
+ * @brief Destroy the Bakery Lock:: Bakery Lock object
+ * Deletes the token and flag arrays.
+ */
+BakeryLock::~BakeryLock() {
+    delete[] token;
+    delete[] flag;
 }
 
 /**

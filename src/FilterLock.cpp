@@ -2,8 +2,9 @@
 
 using namespace std;
 
-/**
+/** 
  * @brief Implements the flag type of filter lock.
+ * Constructor for the GPL class.
  * @note This should work the same as the two process Peterson's Lock!
  */
 GPL::GPL(int num) 
@@ -11,8 +12,19 @@ GPL::GPL(int num)
     , flags{new atomic<bool>[n]} 
     , victim{-1}
 {
+    // Initialize the flags array
+    for (int i = 0; i < n; i++) {
+        flags[i] = false;
+    }
 }
 
+/**
+ * @brief Destroy the GPL::GPL object
+ * Deletes the flags array
+ */
+GPL::~GPL() {
+    delete[] flags;
+}
 
  /**
  * @brief Public Lock method for GPL.
@@ -54,11 +66,11 @@ bool GPL::otherFlagExists(const int myid) {
     return false;
 }
 
-// ----------------------------
+// FlagFilterLock Implementation ------------------------------------------------
 /**
  * @brief Construct a new Flag Filter Lock:: Flag Filter Lock object
- * 
- * @param n // Number of Threads that will compete for this lock object. 
+ *  
+ * @param num // Number of Threads that will compete for this lock object. 
  */
 FlagFilterLock::FlagFilterLock(int num)
     : n{num} 
@@ -67,6 +79,16 @@ FlagFilterLock::FlagFilterLock(int num)
     for (int i = 0; i < n; i++) {
 
         level.push_back(new GPL(n)); // Creates a pointer and pushes it into the vector
+    }
+}
+
+/**
+ * @brief Destroy the Flag Filter Lock:: Flag Filter Lock object
+ * Deletes and frees all the GPL pointers in the vector
+ */
+FlagFilterLock::~FlagFilterLock() {
+    for (int i = 0; i < n; i++) {
+        delete level[i];
     }
 }
 
@@ -94,12 +116,27 @@ void FlagFilterLock::unlock(const int myid) {
 }
 
 
-// LevelFilterLock Implementation --------------------------
+// LevelFilterLock Implementation ----------------------------------------------
 LevelFilterLock::LevelFilterLock(int num)
     : n{num}
     , level{new atomic<int>[n]}
     , victim{new atomic<int>[n]}
 {
+    // Initialize the level and victim arrays
+    for (int i = 0; i < n; i++) {
+        level[i] = 0;
+        victim[i] = -1;
+    }
+}
+
+
+/**
+ * @brief Destroy the Level Filter Lock:: Level Filter Lock object
+ * Frees the level and victim arrays
+ */
+LevelFilterLock::~LevelFilterLock() {
+    delete[] level;
+    delete[] victim;
 }
 
 /**

@@ -9,7 +9,7 @@ public:
     virtual void lock(const int) = 0;
     virtual void unlock(const int) = 0;
 
-    virtual ~Lock() = default; // Default Deconstructor
+    virtual ~Lock() = default; // Default Deconstructor to ensure the proper derived class's destructor is called
 };
 
 #endif // LOCK_H

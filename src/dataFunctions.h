@@ -22,9 +22,9 @@ using std::ofstream;
 
 
 // Parameters to be changed for testing
-#define NUM_CRITICAL_SECTIONS 1000000 
-#define NUM_THREADS 4 
-#define NUM_ITERATIONS 2// Number of times to run the test for each number of threads
+#define NUM_CRITICAL_SECTIONS 10000
+#define NUM_THREADS 6 
+#define NUM_ITERATIONS 10 // Number of times to run the test for each number of threads
 
 // Structs --------------------------------------
 
@@ -139,29 +139,34 @@ Lock *selectLock(int lockType, int numThreads) {
             break;
         default:
             cout << "Invalid lock type" << endl;
-            return nullptr;
+            lock = nullptr;
     }
     return lock;
 }
 
-ofstream prepareFile (int lockType) {
+ofstream prepareFile (int lockType, std::string folderName = "./data/") {
     ofstream file;
+
     switch (lockType) {
         case 0:
-            file.open("../data/FlagFilterLock.txt");
+            file.open(folderName + "FlagFilterLock.txt");
             break;
         case 1:
-            file.open("../data/LevelFilterLock.txt");
+            file.open(folderName + "LevelFilterLock.txt");
             break;
         case 2:
-            file.open("../data/TournamentTree.txt");
+            file.open(folderName + "TournamentTree.txt");
             break;
         case 3:
-            file.open("../data/BakeryLock.txt");
+            file.open(folderName + "BakeryLock.txt");
             break;
         default:
             cout << "Invalid lock type" << endl;
             return file;
+    }
+    if (!file.is_open()) {
+        cout << "File failed to open. Check if there is a proper data folder." << endl;
+        cout << "Default is ./data/ in the same directory as the executable." << endl;
     }
 
     return std::move(file);

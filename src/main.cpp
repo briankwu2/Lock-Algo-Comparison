@@ -27,7 +27,6 @@ using std::ofstream;
  * @brief Main function that tests and measures the performance of different locks.
  * Collects and outputs into separate files, the turnaround time and system throughput for each lock type for
  * some number of threads. 
- * e.g. Collects data for 2, 4, 8, 16, 32, 64, 128 threads.
  * 
  * @param argc 
  * @param argv 
@@ -45,7 +44,7 @@ int main(int argc, char const *argv[])
         ofstream file = prepareFile(lockType);
 
         // Loop through each number of threads
-        for (int i = 2; i <= NUM_THREADS; i *= 2) {
+        for (int i = 1; i <= NUM_THREADS; i++) {
 
             // Opening file statements for the number of threads
             file << "Number of Threads: " << i << endl;
@@ -121,6 +120,7 @@ int main(int argc, char const *argv[])
         file.close();
     }
 
+    cout << "Program has finished running." << endl;
     return 0;
 }
 

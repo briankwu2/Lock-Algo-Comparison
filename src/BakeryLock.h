@@ -20,6 +20,7 @@ private:
 
 public:
     BakeryLock(const int num);
+    ~BakeryLock();
     void lock(const int myid) override;
     void unlock(const int myid) override;
     bool compareTokens(int *token);
