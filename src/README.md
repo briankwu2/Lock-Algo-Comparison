@@ -46,17 +46,30 @@ point of using locks.
 - [X] Implement Bakery
     - [X] Test the bakery algorithm to ensure expected shared counter value is obtained
 - [X] Implement Tournament Tree
-    - [ ] Test the algorithm to ensure expected shared counter value is obtained
-        - Deadlocks! :(, see whats going wrong
+    - [X] Test the algorithm to ensure expected shared counter value is obtained
     - [X] Found out that the issue was. Issues with how to index nodes that are not fully filled complete.
         - aka n - 1 is not the formula for amount of lock nodes
         - Assigning thread ids as pseudo children to locks is still same/similar. Add n (where n is number of nodes)
-- [ ] Implement main function for testing over multiple runs and data collection/structuring for just PL lock.
-    - [ ] Implement for the rest of the locks
+- [X] Implement main function for testing over multiple runs and data collection/structuring for just PL lock.
+    - [X] Implement for the rest of the locks
 - [ ] Fix the TournamentTree.xopp, as the number of nodes (locks) is incorrect and is not n - 1 purely. ()
 - [ ] Use python to create plots as a function of logical thread and time.
-- [ ] 2 problems, 1 is deadlock: flags are both grabbed as the same index (but flag is {true, true})
-- [ ] hash map is crashing?
+- [X] 2 problems, 1 is deadlock: flags are both grabbed as the same index (but flag is {true, true})
+~~- [ ] hash map is crashing?~~
+- [X] Tournament Tree fixed!
+- [ ] Now we have a different problem....
+    - Lots of memory crashes and lack of freeing up pointers EVERYWHERE (check valgrind)
+    - I guess the debugger was doing everything it could to free it up!
+    - Create proper destructors for each Lock object and free up every instance of "new" or any
+    dynamic memory allocation
+    - Double check then main for any memory leaks as well.
+- [ ] Create proper destructors and check for memory leaks!
+    - [ ] FilterLock
+        - [ ] FlagFilterLock
+        - [ ] LevelFilterLock
+    - [ ] BakeryLock
+    - [ ] TournamentLock
+- [ ] Double check on valgrind for leaks!
 
 
 Next Time:
