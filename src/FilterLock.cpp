@@ -9,6 +9,7 @@ using namespace std;
 GPL::GPL(int num) 
     : n{num}
     , flags{new atomic<bool>[n]} 
+    , victim{-1}
 {
 }
 

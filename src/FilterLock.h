@@ -14,9 +14,9 @@ using std::vector;
 class GPL {
 
 private:
+    const int n; // number of threads/processes 
     atomic<bool> *flags; // Pointer to some array of atomic flags
     atomic<int> victim; 
-    const int n; // number of threads/processes 
 
 public:
     GPL(int n);

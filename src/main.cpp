@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
 
             // Opening file statements for the number of threads
             file << "Number of Threads: " << i << endl;
-            file << "Thread Number," << "TurnaroundTime(ns)," << "SystemThroughput(ns)" << endl;
+            file << "Thread Number," << "TurnaroundTime(ns)," << "SystemThroughput(CS/ns)" << endl;
 
             // Test the number of threads for some amount of iterations
             for (int iteration = 0; iteration < NUM_ITERATIONS; iteration++) {
