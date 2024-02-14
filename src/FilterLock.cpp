@@ -5,7 +5,6 @@ using namespace std;
 /**
  * @brief Implements the flag type of filter lock.
  * @note This should work the same as the two process Peterson's Lock!
- * FIXME:Test to make sure
  */
 GPL::GPL(int num) 
     : n{num}

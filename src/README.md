@@ -30,8 +30,12 @@ point of using locks.
 
 ## Running & Data Collection Concerns
 - Make sure to cut out any overhead (e.g. cout debug statements, debug option in compilation, etc.) when running the program for real data.
+    - Specifically, run the command
+    `g++ -O3 -DNDEBUG main.cpp -o main`
+    and include all the necessary other files
 - Make sure to exit out of all applications to ensure that there is nothing else sharing the CPU (as much as reasonable). Includes web-browser and other applications.
 - **NOTE**: Look up how to run and prep program for TACC servers.
+
 
 # TODO
 - [X] Implement a timer using the chrono library, and time a basic function.

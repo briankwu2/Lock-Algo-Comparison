@@ -16,7 +16,7 @@ BakeryLock::BakeryLock(const int num)
  */
 void BakeryLock::lock(const int myid) {
     flag[myid] = true;
-    token[myid] = 1 + *max_element(token, token+n); // FIXME: Test if this works on an atomic array
+    token[myid] = 1 + *max_element(token, token+n); 
     flag[myid] = false;
 
     for (int i = 0; i < n; i++) {

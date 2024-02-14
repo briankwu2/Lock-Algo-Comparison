@@ -22,8 +22,9 @@ using std::ofstream;
 
 
 // Parameters to be changed for testing
-#define NUM_ITERATIONS 1000000
-#define NUM_THREADS 4
+#define NUM_CRITICAL_SECTIONS 1000000 
+#define NUM_THREADS 4 
+#define NUM_ITERATIONS 2// Number of times to run the test for each number of threads
 
 // Structs --------------------------------------
 
@@ -70,7 +71,7 @@ void incrDebug (ThreadParameters &tp) {
     Timer &timer = tp.tpTimer;
     Lock &lock = *tp.lock;
 
-    for (int i = 0; i < NUM_ITERATIONS; i++)
+    for (int i = 0; i < NUM_CRITICAL_SECTIONS; i++)
     {
         timer.reset();
         lock.lock(myid); 
@@ -106,7 +107,7 @@ void increment (ThreadParameters &tp) {
     Lock &lock = *tp.lock;
 
     sysTimer.reset(); // Start Timing the System
-    for (int i = 0; i < NUM_ITERATIONS; i++)
+    for (int i = 0; i < NUM_CRITICAL_SECTIONS; i++)
     {
         tpTimer.reset(); // Start Timing
         lock.lock(myid); 

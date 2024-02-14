@@ -9,7 +9,7 @@
 #include "../src/TournamentTree.h"
 #include "../src/BakeryLock.h"
 
-#define NUM_ITERATIONS 1000
+#define NUM_CRITICAL_SECTIONS 1000
 #define NUM_PROCESSES 2
 
 using std::thread;
@@ -45,7 +45,7 @@ int main(int argc, char const *argv[])
         t[i].join();
     }
 
-    cout << "Expected Result: " << NUM_ITERATIONS * NUM_PROCESSES << endl;
+    cout << "Expected Result: " << NUM_CRITICAL_SECTIONS * NUM_PROCESSES << endl;
     cout << "Actual Result: " << counter << endl;
 
 
@@ -84,7 +84,7 @@ void incrDebug (int &counter, const int myid, Timer &timer, Lock &lock) {
 // Note: Consider bundling all the reference variables into some struct, and just pass the struct instead
 void increment (int &counter, const int myid, Timer &timer, double &timeElapsed, Lock &lock) {
     int predCount;
-    for (int i = 0; i < NUM_ITERATIONS; i++)
+    for (int i = 0; i < NUM_CRITICAL_SECTIONS; i++)
     {
         timer.reset(); // Start Timing
         lock.lock(myid); 
@@ -97,7 +97,7 @@ void increment (int &counter, const int myid, Timer &timer, double &timeElapsed,
 
 
 void incrPrint (int &counter, const int myid, Lock &lock) {
-    for (int i = 0; i < NUM_ITERATIONS; i++) {
+    for (int i = 0; i < NUM_CRITICAL_SECTIONS; i++) {
         lock.lock(myid);
         counter++;
         cout << "Thread " << myid << ": " << counter << endl;
@@ -111,8 +111,8 @@ void incrPrint (int &counter, const int myid, Lock &lock) {
 void displayResults (vector<double> timeE) {
     for (int i = 0; i < timeE.size(); i++) {
         cout << "Total Turnaround Time for Thread " << i << ": " << timeE[i] << " seconds" << endl;
-        cout << "Average Turnaround Time for Thread " << i << ": " << timeE[i] / NUM_ITERATIONS << " seconds" << endl;
-        cout << "System Throughput for Thread " << i << ": " << NUM_ITERATIONS / timeE[i] << " seconds" << endl;
+        cout << "Average Turnaround Time for Thread " << i << ": " << timeE[i] / NUM_CRITICAL_SECTIONS << " seconds" << endl;
+        cout << "System Throughput for Thread " << i << ": " << NUM_CRITICAL_SECTIONS / timeE[i] << " seconds" << endl;
         cout << endl;
     }
 
