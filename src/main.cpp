@@ -99,6 +99,9 @@ int main(int argc, char const *argv[])
                     threads[j].join();
                 }
 
+                long double allThreadsAverageTT = 0;
+                long double allThreadsAverageST = 0;
+
                 // Collect data from Thread Parameters and write to the file
                 for (int j = 0; j < i; j++) {
                     // Calculations of average turnaround time and average system throughput
@@ -107,7 +110,12 @@ int main(int argc, char const *argv[])
 
                     // Write to file
                     file << j << "," << averageTurnaroundTime << "," << averageSystemThroughput << endl;
+
+                    allThreadsAverageTT += averageTurnaroundTime;
+                    allThreadsAverageST += averageSystemThroughput;
                 }
+                file << "Averages:" << endl;
+                file << allThreadsAverageTT / i << allThreadsAverageST / i << endl;
 
                 // De-allocate lock memory & close file
                 delete lock;
