@@ -45,6 +45,9 @@ int main(int argc, char const *argv[])
         ofstream file = prepareFile(lockType);
         file << std::fixed << std::setprecision(3); // Sets the precision of numbers written into the file
 
+        ofstream finalAvgFile = prepareAvgFile(lockType);
+        finalAvgFile << std::fixed << std::setprecision(3); // Sets the precision of numbers written into the file
+
         // Loop through each number of threads
         for (int i = 1; i <= NUM_THREADS; i++) {
 
@@ -124,7 +127,7 @@ int main(int argc, char const *argv[])
 
             file << "Total Averages:" << endl;
             file << "Average Turnaround Time (ns): " << allThreadsAverageTT / (i * NUM_ITERATIONS) << endl;
-            file << "Average System Throughput (CS per second): " << allThreadsAverageST / (i * NUM_ITERATIONS) << endl;
+            file << "Average System Throughput (CS per second): : " << allThreadsAverageST / (i * NUM_ITERATIONS) << endl;
             file << endl; // Separates Number of Threads
 
         } // END OF THREADS LOOP

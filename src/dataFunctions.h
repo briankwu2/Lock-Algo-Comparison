@@ -173,4 +173,32 @@ ofstream prepareFile (int lockType, std::string folderName = "./data/") {
 
 }
 
+ofstream prepareAvgFile (int lockType, std::string folderName = "./data/") {
+    ofstream file;
+
+    switch (lockType) {
+        case 0:
+            file.open(folderName + "AvgFlagFilterLock.csv");
+            break;
+        case 1:
+            file.open(folderName + "AvgLevelFilterLock.csv");
+            break;
+        case 2:
+            file.open(folderName + "AvgTournamentTree.csv");
+            break;
+        case 3:
+            file.open(folderName + "AvgBakeryLock.csv");
+            break;
+        default:
+            cout << "Invalid lock type" << endl;
+            return file;
+    }
+    if (!file.is_open()) {
+        cout << "File failed to open. Check if there is a proper data folder." << endl;
+        cout << "Default is ./data/ in the same directory as the executable." << endl;
+    }
+
+    return std::move(file);
+
+}
 #endif // DATA_FUNCTIONS_H
