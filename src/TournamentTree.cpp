@@ -29,8 +29,7 @@ void PL::lock(const int myid) {
 }
 
 /**
- * @brief Unlock method. Firstly, removes the id that maps to the flag index.
- * Then releases the lock.
+ * @brief Unlock method. Uses a Node to determine which index myid is mapped to.
  * 
  * @param myid 
  */
@@ -86,7 +85,7 @@ TournamentTree::~TournamentTree () {
  * 
  * @param myid 
  * @note The threads are leaf nodes, but have their own thread id. To find what node index they would have
- * if following the structured order of a binary tree, we add n - 1 to myid.
+ * if following the structured order of a binary tree, we add n to myid.
  */
 void TournamentTree::lock (const int myid) {
     int lockIndex = getPseudoNodeIndex(myid); // Gets the imaginary node index for the thread
@@ -149,6 +148,12 @@ vector<int> TournamentTree::getTopToBottomOrder (int currIndex) {
     return order;
 }
 
+/**
+ * @brief Gets the node index of some thread to assign the thread to a leaf node.
+ * 
+ * @param myid 
+ * @return int 
+ */
 int TournamentTree::getPseudoNodeIndex (const int myid) {
     return myid + numNodes;
 }

@@ -11,6 +11,7 @@ using std::atomic;
 using std::vector;
 
 // Class Declarations
+
 class GPL {
 
 private:

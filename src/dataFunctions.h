@@ -121,7 +121,14 @@ void increment (ThreadParameters &tp) {
 
 }
 
-
+/**
+ * @brief Helper function used to return a pointer to a Lock object that holds a
+ * derived Lock class. To be used in a modular critical section function.
+ * 
+ * @param lockType 
+ * @param numThreads 
+ * @return Lock* 
+ */
 Lock *selectLock(int lockType, int numThreads) {
     Lock *lock;
     switch (lockType) {
@@ -144,6 +151,14 @@ Lock *selectLock(int lockType, int numThreads) {
     return lock;
 }
 
+/**
+ * @brief Prepares a file to write to and returns a output file stream.
+ * 
+ * @param lockType 
+ * @param thread_num 
+ * @param folderName 
+ * @return ofstream 
+ */
 ofstream prepareFile (int lockType, int thread_num, std::string folderName = "./data/") {
     ofstream file;
 
@@ -173,6 +188,13 @@ ofstream prepareFile (int lockType, int thread_num, std::string folderName = "./
 
 }
 
+/**
+ * @brief Prepares the file to store the final and averaged results. Returns a output file stream.
+ * 
+ * @param lockType 
+ * @param folderName 
+ * @return ofstream 
+ */
 ofstream prepareAvgFile (int lockType, std::string folderName = "./data/") {
     ofstream file;
 

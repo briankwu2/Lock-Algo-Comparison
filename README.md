@@ -52,43 +52,26 @@ point of using locks.
         - Assigning thread ids as pseudo children to locks is still same/similar. Add n (where n is number of nodes)
 - [X] Implement main function for testing over multiple runs and data collection/structuring for just PL lock.
     - [X] Implement for the rest of the locks
-- [ ] Fix the TournamentTree.xopp, as the number of nodes (locks) is incorrect and is not n - 1 purely. ()
-- [ ] Use python to create plots as a function of logical thread and time.
+- [X] Fix the TournamentTree.xopp, as the number of nodes (locks) is incorrect and is not n - 1 purely. ()
 - [X] 2 problems, 1 is deadlock: flags are both grabbed as the same index (but flag is {true, true})
 ~~- [ ] hash map is crashing?~~
 - [X] Tournament Tree fixed!
-- [ ] Now we have a different problem....
+- [X] Now we have a different problem.... Solved!
     - Lots of memory crashes and lack of freeing up pointers EVERYWHERE (check valgrind)
     - I guess the debugger was doing everything it could to free it up!
     - Create proper destructors for each Lock object and free up every instance of "new" or any
     dynamic memory allocation
     - Double check then main for any memory leaks as well.
-- [ ] Create proper destructors and check for memory leaks!
+- [X] Create proper destructors and check for memory leaks!
     - [X] FilterLock
         - [X] FlagFilterLock
         - [X] LevelFilterLock
-        - [ ] Tested in Valgrind?
-    - [ ] BakeryLock
-    - [ ] TournamentLock
-- [ ] Double check on valgrind for leaks!
+        - [X] Tested in Valgrind?
+    - [X] BakeryLock
+    - [X] TournamentLock
+- [X] Double check on valgrind for leaks!
 
 
-Next Time:
-- keep looking at the pickFlagIndex() function
-although now it seems like the hash table is the one weirding up
-it is possible to write at the same time for the hash table
-.erase() and [] assignment. check if that is the problem
-
-
-
-## Questions
-- How should I structure the data collected to be easily processed?
-    - Vector<double> for each thread. Global vector for each thread.
-    - Find average turnaround time, Find average system throughput by taking total time for each thread to complete, divided by number of CS executed.
-    - Write the turnaround time into a file after joining
-- Each thread should have its own "Timer" object.
-- Do I want the number of CS requests to be randomized?
-    - How do I have this be consistent? Seed it?
 
 
 
