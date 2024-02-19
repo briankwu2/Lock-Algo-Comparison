@@ -41,26 +41,24 @@ int main(int argc, char const *argv[])
     // Loop through each lock type
     for (int lockType = 0; lockType < 4; lockType++) {
 
-        // Prepare the file for writing for this lock type.
-        ofstream file = prepareFile(lockType);
-        file << std::fixed << std::setprecision(3); // Sets the precision of numbers written into the file
 
         ofstream finalAvgFile = prepareAvgFile(lockType);
         finalAvgFile << std::fixed << std::setprecision(3); // Sets the precision of numbers written into the file
-
-        finalAvgFile << "Number of Threads, Average Turnaround Time (ns), Average System Throughput" << endl;
+        finalAvgFile << "Number of Threads,Average Turnaround Time (ns),Average System Throughput" << endl;
 
         // Loop through each number of threads
         for (int i = 1; i <= NUM_THREADS; i++) {
 
+            // Prepare the file for writing for this lock type.
+            ofstream file = prepareFile(lockType, i);
+            file << std::fixed << std::setprecision(3); // Sets the precision of numbers written into the file
+
             long double allThreadsAverageTT = 0;
             long double allThreadsAverageST = 0;
 
-            finalAvgFile << i << ", "; // Indicates the number of threads for the average data file 
+            finalAvgFile << i << ","; // Indicates the number of threads for the average data file 
 
-            // Opening file statements for the number of threads
-            file << "Number of Threads: " << i << endl;
-            file << "Iteration, Thread Number, TurnaroundTime(ns), SystemThroughput(CS/s)" << endl;
+            file << "Iteration,Thread Number,TurnaroundTime(ns),SystemThroughput(CS/s)" << endl;
 
             // Test the number of threads for some amount of iterations
             for (int iteration = 0; iteration < NUM_ITERATIONS; iteration++) {
@@ -118,7 +116,7 @@ int main(int argc, char const *argv[])
                     long double averageSystemThroughput = NUM_CRITICAL_SECTIONS / (sysTimeElapsedVec[j] * .000000001);
 
                     // Write to file
-                    file << iteration << ", " << j << ", " << averageTurnaroundTime << ", " << averageSystemThroughput << endl;
+                    file << iteration << "," << j << "," << averageTurnaroundTime << "," << averageSystemThroughput << endl;
 
                     allThreadsAverageTT += averageTurnaroundTime;
                     allThreadsAverageST += averageSystemThroughput;
@@ -131,13 +129,14 @@ int main(int argc, char const *argv[])
 
             file << endl; // Separates Number of Threads for raw file
 
-            finalAvgFile << allThreadsAverageTT / (i * NUM_ITERATIONS) << ", ";
+            finalAvgFile << allThreadsAverageTT / (i * NUM_ITERATIONS) << ",";
             finalAvgFile << allThreadsAverageST / (i * NUM_ITERATIONS) << endl;
+
+            file.close();
 
         } // END OF THREADS LOOP
 
         // Close the file
-        file.close();
         finalAvgFile.close();
 
     } // END OF LOCK TYPE
