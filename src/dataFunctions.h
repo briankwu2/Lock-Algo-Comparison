@@ -22,9 +22,9 @@ using std::ofstream;
 
 
 // Parameters to be changed for testing
-#define NUM_CRITICAL_SECTIONS 10000
-#define NUM_THREADS 6 
-#define NUM_ITERATIONS 10 // Number of times to run the test for each number of threads
+#define NUM_CRITICAL_SECTIONS 100000
+#define NUM_THREADS 12 
+#define NUM_ITERATIONS 100 // Number of times to run the test for each number of threads
 
 // Structs --------------------------------------
 
@@ -149,16 +149,16 @@ ofstream prepareFile (int lockType, std::string folderName = "./data/") {
 
     switch (lockType) {
         case 0:
-            file.open(folderName + "FlagFilterLock.txt");
+            file.open(folderName + "FlagFilterLock.csv");
             break;
         case 1:
-            file.open(folderName + "LevelFilterLock.txt");
+            file.open(folderName + "LevelFilterLock.csv");
             break;
         case 2:
-            file.open(folderName + "TournamentTree.txt");
+            file.open(folderName + "TournamentTree.csv");
             break;
         case 3:
-            file.open(folderName + "BakeryLock.txt");
+            file.open(folderName + "BakeryLock.csv");
             break;
         default:
             cout << "Invalid lock type" << endl;

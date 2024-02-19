@@ -4,6 +4,7 @@
 #include <thread>
 #include <chrono>
 #include <fstream>
+#include <iomanip>
 
 // User Defined Headers
 #include "TimerWrapper.h"
@@ -42,17 +43,20 @@ int main(int argc, char const *argv[])
 
         // Prepare the file for writing for this lock type.
         ofstream file = prepareFile(lockType);
+        file << std::fixed << std::setprecision(3); // Sets the precision of numbers written into the file
 
         // Loop through each number of threads
         for (int i = 1; i <= NUM_THREADS; i++) {
 
+            long double allThreadsAverageTT = 0;
+            long double allThreadsAverageST = 0;
+
             // Opening file statements for the number of threads
             file << "Number of Threads: " << i << endl;
-            file << "Thread Number," << "TurnaroundTime(ns)," << "SystemThroughput(CS/ns)" << endl;
+            file << "Iteration, Thread Number, TurnaroundTime(ns), SystemThroughput(CS/s)" << endl;
 
             // Test the number of threads for some amount of iterations
             for (int iteration = 0; iteration < NUM_ITERATIONS; iteration++) {
-                file << "Iteration: " << iteration << endl; 
                 // Select lock type;
                 Lock *lock = selectLock(lockType, i); 
 
@@ -99,34 +103,36 @@ int main(int argc, char const *argv[])
                     threads[j].join();
                 }
 
-                long double allThreadsAverageTT = 0;
-                long double allThreadsAverageST = 0;
 
                 // Collect data from Thread Parameters and write to the file
                 for (int j = 0; j < i; j++) {
                     // Calculations of average turnaround time and average system throughput
                     long double averageTurnaroundTime = timeElapsedVec[j] / NUM_CRITICAL_SECTIONS; 
-                    long double averageSystemThroughput = NUM_CRITICAL_SECTIONS / sysTimeElapsedVec[j] ;
+                    long double averageSystemThroughput = NUM_CRITICAL_SECTIONS / (sysTimeElapsedVec[j] * .000000001);
 
                     // Write to file
-                    file << j << "," << averageTurnaroundTime << "," << averageSystemThroughput << endl;
+                    file << iteration << ", " << j << ", " << averageTurnaroundTime << ", " << averageSystemThroughput << endl;
 
                     allThreadsAverageTT += averageTurnaroundTime;
                     allThreadsAverageST += averageSystemThroughput;
                 }
-                file << "Averages:" << endl;
-                file << allThreadsAverageTT / i << allThreadsAverageST / i << endl;
 
                 // De-allocate lock memory & close file
                 delete lock;
-            }
 
+            } // END OF ITERATION #
+
+            file << "Total Averages:" << endl;
+            file << "Average Turnaround Time (ns): " << allThreadsAverageTT / (i * NUM_ITERATIONS) << endl;
+            file << "Average System Throughput (CS per second): " << allThreadsAverageST / (i * NUM_ITERATIONS) << endl;
             file << endl; // Separates Number of Threads
-        }
+
+        } // END OF THREADS LOOP
 
         // Close the file
         file.close();
-    }
+
+    } // END OF LOCK TYPE
 
     cout << "Program has finished running." << endl;
     return 0;
