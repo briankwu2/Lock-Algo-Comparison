@@ -34,45 +34,6 @@ point of using locks.
     `g++ -O3 -DNDEBUG main.cpp -o main`
     and include all the necessary other files
 - Make sure to exit out of all applications to ensure that there is nothing else sharing the CPU (as much as reasonable). Includes web-browser and other applications.
-- **NOTE**: Look up how to run and prep program for TACC servers.
-
-
-# TODO
-- [X] Implement a timer using the chrono library, and time a basic function.
-- [X] Implement the timer into the simple PL algorithm.
-    - [X] Time it, and form a structure to collect data over
-- [X] Implement the main function, create a modular increment function that takes some Lock object and runs its lock functions.
-- [X] Implement the timing of each thread. Collect system throughput and turnaround time.
-- [X] Implement Bakery
-    - [X] Test the bakery algorithm to ensure expected shared counter value is obtained
-- [X] Implement Tournament Tree
-    - [X] Test the algorithm to ensure expected shared counter value is obtained
-    - [X] Found out that the issue was. Issues with how to index nodes that are not fully filled complete.
-        - aka n - 1 is not the formula for amount of lock nodes
-        - Assigning thread ids as pseudo children to locks is still same/similar. Add n (where n is number of nodes)
-- [X] Implement main function for testing over multiple runs and data collection/structuring for just PL lock.
-    - [X] Implement for the rest of the locks
-- [X] Fix the TournamentTree.xopp, as the number of nodes (locks) is incorrect and is not n - 1 purely. ()
-- [X] 2 problems, 1 is deadlock: flags are both grabbed as the same index (but flag is {true, true})
-~~- [ ] hash map is crashing?~~
-- [X] Tournament Tree fixed!
-- [X] Now we have a different problem.... Solved!
-    - Lots of memory crashes and lack of freeing up pointers EVERYWHERE (check valgrind)
-    - I guess the debugger was doing everything it could to free it up!
-    - Create proper destructors for each Lock object and free up every instance of "new" or any
-    dynamic memory allocation
-    - Double check then main for any memory leaks as well.
-- [X] Create proper destructors and check for memory leaks!
-    - [X] FilterLock
-        - [X] FlagFilterLock
-        - [X] LevelFilterLock
-        - [X] Tested in Valgrind?
-    - [X] BakeryLock
-    - [X] TournamentLock
-- [X] Double check on valgrind for leaks!
-
-
-
 
 
 
